@@ -3,9 +3,12 @@
 import { Resend } from "resend";
 import { EmailTemplate } from "../../_components/email-template";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req) {
+  const resendApiKey = process.env.RESEND_API_KEY;
+  const resend = new Resend(resendApiKey);
+
+
   const body = await req.json();
 
   try {
