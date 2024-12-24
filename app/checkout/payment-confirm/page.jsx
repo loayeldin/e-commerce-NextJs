@@ -4,6 +4,7 @@ import Link from 'next/link'
 
 
 function PaymentConfirm() {
+	
     return (
 		<div className='flex flex-col items-center justify-center px-5 mt-4'>
 			<Image src='/verified.gif'

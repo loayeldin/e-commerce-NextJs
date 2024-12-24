@@ -9,6 +9,7 @@ import OrderApi from'../../_utils/OrderApi'
 import CartApis from "../../_utils/CartApis";
 
 const CheckoutForm = ({amount}) => {
+  
     const {cart,setCart} = useContext(cartContext)
     const {user} = useUser()
     const form = document.getElementById('payment-form');
