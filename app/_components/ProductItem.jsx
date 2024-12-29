@@ -6,27 +6,30 @@ import Link from 'next/link';
 
 function ProductItem({item}) {
     
-    console.log(item.documentId);
+
   return (
-    <Link href={`/product-details/${item.documentId}`} className='rounded-lg p-1  border-teal-400 hover:border hover:shadow-md hover:cursor-pointer'>
+    <Link href={`/product-details/${item.documentId}`} className=' rounded-lg  mb-5 border-teal-400 border shadow-md shadow-teal-100 hover:cursor-pointer'>
        <Image src={`${item.banner.url}`}
         width={400}
-        height={350}
+        height={300}
         alt='banner img'
-        className='rounded-t-lg h-[250px] w-[100%] object-fill'
+        className=' p-2 rounded-t-lg h-[300px] w-[100vw] object-fill '
         />
-       <div className=' flex justify-between items-center p-3 bg-gray-100 rounded-b-lg'>
-        <div className=''>
-                <h2 className='text-[18px] font-medium line-clamp-1'>{item.title}</h2>
+       <div className='flex flex-col justify-between p-3 bg-gray-50 rounded-b-lg min-h-24 hover:text-primary transition-all'>
+      
+                  <h2 className='text-[16px] font-medium line-clamp-2'>{item.title}</h2>
+                  {/* <p className='text-[14px] mt-2 line-clamp-2'>{item?.description[0]?.children[0]?.text}</p> */}
 
-                <h2 className='text-[13px] text-gray-400 flex gap-2 items-center'>
-                    <List className='w-4 h-4'/>
-                    {item.category}
-                </h2>
-            </div>
-            <div>
-                <h2>{item.price}</h2>
-            </div>
+                
+                  <div className='flex justify-between '> 
+                    <h2 className='text-[13px] text-gray-400 flex gap-2 items-center '>
+                          <List className='w-4 h-4'/>
+                          {item.category}
+                    </h2>
+                    <h2 className='text-teal-500'> ${item.price}</h2>
+                  </div>
+   
+         
        </div>
 
     </Link>

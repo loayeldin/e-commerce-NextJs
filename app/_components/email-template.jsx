@@ -147,8 +147,8 @@ export const EmailTemplate = ({ body }) => (
 					  />
 					</td>
 					<td style={tableCellStyle}>{citem.product.title}</td>
-					{/* <td style={tableCellStyle}>{citem.quantity}</td> */}
-					<td style={tableCellStyle}>1</td>
+					<td style={tableCellStyle}>{citem.quantity}</td>
+					{/* <td style={tableCellStyle}>{c}</td> */}
 					<td style={tableCellStyle}>${citem.product.price}</td>
 				  </tr>
 				))}
@@ -195,7 +195,7 @@ export const EmailTemplate = ({ body }) => (
 	borderBottom: "2px solid #ddd",
   };
   const tableCellStyle = { padding: "10px", borderBottom: "1px solid #ddd",textAlign:'center' };
-  const imageStyle = { width: "80px", height: "80px", objectFit: "cover",borderRadius:'20px' };
+  const imageStyle = { width: "80px", height: "80px", objectFit: "contain",borderRadius:'20px' };
   const totalStyle = { fontWeight: "bold", marginTop: "20px" };
   const buttonRow = { marginTop: "20px" };
   const checkoutButton = {

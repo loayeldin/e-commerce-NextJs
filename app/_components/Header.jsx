@@ -9,6 +9,7 @@ import { usePathname } from 'next/navigation'
 import { cartContext } from '../_context/CartContext'
 import CartApis from '../_utils/CartApis'
 import Cart from '../_components/Cart'
+import Link from 'next/link'
 
  function Header() {
   const {user,isLoaded} = useUser() ;
@@ -24,6 +25,7 @@ import Cart from '../_components/Cart'
         id: cartItem.id,
         documentId: cartItem.documentId,
         product: cartItem.products[0],
+        quantity:cartItem.quantity
       }));
       setCart(newCart);
     })
@@ -56,11 +58,11 @@ import Cart from '../_components/Cart'
           <nav aria-label="Global">
             <ul className="flex items-center gap-6 text-sm">
               <li>
-                <a className="text-gray-500 transition hover:text-gray-500/75" href="#"> Home </a>
+                <Link href='/' className="text-gray-500 transition hover:text-gray-500/75" > Home </Link>
               </li>
   
               <li>
-                <a className="text-gray-500 transition hover:text-gray-500/75" href="#"> Explore </a>
+                <Link href="/userorders" className="text-gray-500 transition hover:text-gray-500/75" > orders </Link>
               </li>
   
               <li>

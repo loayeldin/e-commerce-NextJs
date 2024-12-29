@@ -17,34 +17,60 @@ const CheckoutForm = ({amount}) => {
   const stripe = useStripe();
   const elements = useElements();
 
-  const createOrder=()=>{
+  const createOrder= async ()=>{
   
     let productsDocumentId = [];
+    const productQuantities = {};
     cart.forEach(el=>{
-        productsDocumentId.push(el?.product?.documentId )
+      console.log(el,' checkkkkkkkkkkk');
+        productsDocumentId.push(el?.product?.documentId)
+        productQuantities[el.product.documentId] = el.quantity;
     })
     console.log('checkout productsDocumentId.....',productsDocumentId);
     const data= {
         data:{
             email:user.primaryEmailAddress.emailAddress,
-            amount:amount,
+            amount:Number(amount) / 100 , // to convert from cent to dollars
             username:user.fullName,
-            products:productsDocumentId
-
+            products:productsDocumentId,
+            shippingstatus:'pending',
+            productQuantities: JSON.stringify(productQuantities)
         }
     }
     console.log(data);
-    OrderApi.addOrder(data).then((res)=>{
-        console.log(res);
-        if(res){
-            cart.forEach(el=>{
-                CartApis.deleteCartItem(el?.documentId).then(result=>{
-
-                })
-            })
+    // OrderApi.addOrder(data).then((res)=>{
+    //     console.log(res);
+     
+    //         cart.forEach(el=>{
+    //             CartApis.deleteCartItem(el?.documentId).then(result=>{
+    //                 console.log(result,'.....item delted .....');
+    //             }).catch(err=>{
+    //               console.log('errrrrrrrrrrrr');
+    //               throw Error(err)
+    //             })
+    //         })
           
+      
+    // })
+    try {
+      const res = await OrderApi.addOrder(data);
+      console.log(res);
+  
+      // Sequentially delete items from the cart
+      for (const el of cart) {
+        try {
+          const result = await CartApis.deleteCartItem(el?.documentId);
+          console.log(result, '.....item deleted.....');
+        } catch (err) {
+          console.error('Error deleting item:', el?.documentId, err);
+          throw new Error(err);
         }
-    })
+      }
+  
+      console.log('All items deleted successfully.');
+    } catch (err) {
+      console.error('Error creating order or deleting cart items:', err);
+    }
   }
   const sendEmail = async()=>{
     const res = await fetch("api/send-email", {
@@ -80,7 +106,7 @@ const CheckoutForm = ({amount}) => {
       handleError(submitError);
       return;
     }
-
+    
     const res = await fetch("api/create-intent", {
     
       method: "POST",
@@ -91,25 +117,28 @@ const CheckoutForm = ({amount}) => {
     });
     const clientSecret = await res.json();
 
-    createOrder();
-    sendEmail();
-    const result = await stripe.confirmPayment({
-      //`Elements` instance that was used to create the Payment Element
-      clientSecret,
-      elements,
-      confirmParams: {
-        return_url: 'http://localhost:3000/checkout/payment-confirm',
-      },
+    createOrder().then(async()=>{
+      const result = await stripe.confirmPayment({
+        //`Elements` instance that was used to create the Payment Element
+        clientSecret,
+        elements,
+        confirmParams: {
+          return_url: 'http://localhost:3000/checkout/payment-confirm',
+        },
+      });
     });
+    sendEmail();
 
-    if (result.error) {
-      // Show error to your customer (for example, payment details incomplete)
-      console.log(result.error.message);
-    } else {
-      // Your customer will be redirected to your `return_url`. For some payment
-      // methods like iDEAL, your customer will be redirected to an intermediate
-      // site first to authorize the payment, then redirected to the `return_url`.
-    }
+ 
+
+    // if (result.error) {
+    //   // Show error to your customer (for example, payment details incomplete)
+    //   console.log(result.error.message);
+    // } else {
+    //   // Your customer will be redirected to your `return_url`. For some payment
+    //   // methods like iDEAL, your customer will be redirected to an intermediate
+    //   // site first to authorize the payment, then redirected to the `return_url`.
+    // }
   };
   
   return (

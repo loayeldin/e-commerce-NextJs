@@ -3,7 +3,7 @@ import React from "react";
 
 function BreadCrumb({path,id}) {
   return (
-    <nav aria-label="Breadcrumb" className="flex">
+    <nav aria-label="Breadcrumb" className="flex mb-6">
       <ol className="flex overflow-hidden rounded-lg border border-gray-200 text-gray-600">
         <li className="flex items-center">
           <Link
@@ -39,7 +39,9 @@ function BreadCrumb({path,id}) {
             {path?.split('/')[1]}
           </a>
         </li>
-        <li className="relative flex items-center">
+       {
+        id && 
+          <li className="relative flex items-center">
           <span className="absolute inset-y-0 -start-px h-10 w-4 bg-gray-100 [clip-path:_polygon(0_0,_0%_100%,_100%_50%)] rtl:rotate-180"></span>
 
           <a
@@ -49,6 +51,7 @@ function BreadCrumb({path,id}) {
             {id}
           </a>
         </li>
+       }
       </ol>
     </nav>
   );

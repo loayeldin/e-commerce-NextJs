@@ -22,7 +22,7 @@ import { usePathname } from 'next/navigation'
     const getProductDetails_ = ()=>{
         console.log("from details : " , productId);
         ProductsApi.getProductById(productId).then(res=>{
-        
+         
             setProductDetails(res.data)
           
             getSimilarProducts_(res.data.data.category)
@@ -31,8 +31,8 @@ import { usePathname } from 'next/navigation'
     const getSimilarProducts_= (category)=>{
         console.log("cat from similar", category);
         ProductsApi.getSimilarProductsByCat(category).then(res=>{
-            setSimilarProducts(res?.data?.data)
-            console.log('similar...',res.data.data);
+            setSimilarProducts(res?.data)
+            console.log('similar...',res.data);
         })
     }
    
@@ -48,17 +48,17 @@ import { usePathname } from 'next/navigation'
         
    
     return (
-    <div className='px-2 py-8 md:px-28 '>
+    <div className='px-2 py-8 md:px-5 lg:px-28 '>
         
         {/* {
             productDetails.data && 
             <> */}
-                <BreadCrumb path={path} id={productDetails?.data?.id}/>
-                <div className='mt-10 grid grid-cols-12 gap-y-3 sm:gap-x-0 md:gap-x-16'>
-                    <div className='col-span-12 md:col-span-5 flex items-center '>
+                <BreadCrumb path={path} id={productDetails?.data?.id} />
+                <div className='py-8 px-2  grid grid-cols-12 gap-y-3 sm:gap-x-0 md:gap-x-16  rounded-lg' style={{boxShadow:'0 2px 10px #0000001a'}}>
+                    <div className='col-span-12 md:col-span-5 py-2 '>
                         <ProductDetailsBanner product={productDetails.data}  />
                     </div>
-                    <div className='col-span-12 md:col-span-7  '>
+                    <div className='col-span-12 md:col-span-7 py-2 '>
                         <ProductDetailsInfo product={productDetails.data}  />
                     </div>
                 
@@ -68,9 +68,9 @@ import { usePathname } from 'next/navigation'
         } */}
         <div>
             <h2 className='mt-24 capitalize text-2xl mb-5 text-teal-500'>similar products</h2>
-            <ProductsList productList={similarProducts}/>
+            <ProductsList products={similarProducts}/>
         </div>
-        {productId}
+    
     </div>
   )
 }

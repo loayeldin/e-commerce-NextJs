@@ -5,15 +5,18 @@ import Header from "./_components/Header";
 import Footer from "./_components/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
 import {cartContext} from './_context/CartContext'
+import {productsContext} from './_context/ProductsContext'
+
 import { useState } from "react";
 import { ToastContainer } from 'react-toastify';
-
+import { NextUIProvider } from "@nextui-org/react";
+import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
 import '../node_modules/react-toastify/dist/ReactToastify.css'
+import "primereact/resources/themes/lara-light-cyan/theme.css";
 const robotoFont = Roboto({
   weight:'700',
   subsets: ["latin"],
 });
-
 
 
 // export const metadata = {
@@ -23,22 +26,35 @@ const robotoFont = Roboto({
 
 export default function RootLayout({ children }) {
   const [cart , setCart] = useState([])
+
+  const[products, setProducts] = useState({})
   return (
     <ClerkProvider>
-     <cartContext.Provider value={{cart,setCart}}>
-     <html lang="en">
-        <body
-          className={robotoFont.className}
-        >
-          <Header/>
-          <ToastContainer
-            autoClose={2000}
-          />
-          {children}
-          <Footer/>
-        </body>
-      </html>
-     </cartContext.Provider>
+      <productsContext.Provider value={{products,setProducts}}>
+      <PrimeReactProvider >
+        <cartContext.Provider value={{cart,setCart}}>
+        
+          <html lang="en">
+              <body
+                className={robotoFont.className}
+              >
+                <Header/>
+                <ToastContainer
+                  autoClose={2000}
+                />
+                <NextUIProvider >
+                {children}
+                </NextUIProvider>
+              
+                <Footer/>
+              </body>
+            </html>
+    
+
+      
+        </cartContext.Provider>
+        </PrimeReactProvider>
+     </productsContext.Provider>
     </ClerkProvider>
 
   );

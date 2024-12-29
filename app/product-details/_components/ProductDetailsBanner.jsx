@@ -7,7 +7,7 @@ import { hostName } from '../../_utils/axiosClient';
 function ProductDetailsBanner({product}) {
     console.log(hostName,product?.banner?.url);
   return (
-    <div  >
+    <div className='w-[100%]  flex justify-center' >
         {
           product?.banner?.url ?
           <Image
@@ -15,11 +15,11 @@ function ProductDetailsBanner({product}) {
           alt="product-details-info"
           width={400}
           height={400}
-          className='rounded-lg h-[300px] w-[100%]'
+          className='rounded-lg object-contain '
           /> 
           :
          
-          <SkeletonAnimation width={'300px'} height={'300px'} />   
+          <SkeletonAnimation width={'400px'} height={'500px'} />   
         }
        
      

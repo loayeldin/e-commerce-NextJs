@@ -1,14 +1,18 @@
-import React from 'react'
+"use client";
+import React from "react";
 import ProductItem from './ProductItem';
 
-function ProductsList({productList}) {
-  console.log(productList);
+
+
+function ProductsList({products}) {
+
+
   return (
-    <div className='grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+    <div className='grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3'>
 
       {
-        productList.map(item=>(
-          <ProductItem item={item} key={item.id}/>
+       products.data&& products.data.map(item=>(
+          <ProductItem item={item} key={item.id} />
         
         ))
       }
@@ -17,3 +21,6 @@ function ProductsList({productList}) {
 }
 
 export default ProductsList
+
+
+

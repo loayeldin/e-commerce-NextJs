@@ -7,11 +7,52 @@ import CartApis from '../_utils/CartApis';
 import { toast } from 'react-toastify';
 
 import { useRouter } from 'next/navigation';
+import Counter from './Counter';
+import { useUser } from '@clerk/nextjs';
 function Cart({showCart,setShowCart}) {
+    const {user} = useUser()
     const router = useRouter();
     const{cart,setCart} = useContext(cartContext);
+   const handleCartItemQuantity=  (itemId,newQuantity)=>{
+    console.log(itemId,newQuantity);
+        setCart(oldCart=>
+         
+            oldCart.map(item=>{
+              
+             return item.id ===itemId ? {...item , quantity:newQuantity} :item
+            })
+        )
+    }
+    const handleSaveCart =async (e)=>{
+        e.stopPropagation()
+        const dataTemplate = {
+            username:user.fullName,
+             email:user.primaryEmailAddress.emailAddress,
+             products:[] ,
+             quantity:null,
+        }
+        const updatePromises = cart.map(cartItem=>{
+            const data = {
+                ...dataTemplate,
+                products: [cartItem.product.documentId],
+                quantity: cartItem.quantity,
+            };
+            console.log(data, 'from cart');
+           return CartApis.updateCart(data,cartItem.documentId)
+        })
+        try{
+            await Promise.all(updatePromises)
+            toast.success('Cart Updated Successfully')
+        }
+        catch(err){
+            toast.error(err.message)
+            }
+     }
+  
     const calcTotalPrice= ()=>{
-        return cart.reduce((total,cItem)=>total+=cItem.product.price,0)
+        return cart.reduce(
+            (total,cItem)=>total+=cItem.product.price * cItem.quantity,
+            0)
     }
     const handleDeleteCart = (e,documentId)=>{
         e.stopPropagation()
@@ -25,7 +66,7 @@ function Cart({showCart,setShowCart}) {
             }
         })
         
-        console.log(documentId,'selected cart');
+    
     }
     console.log(cart,' from cart...........');
     return (
@@ -46,20 +87,20 @@ function Cart({showCart,setShowCart}) {
            
                 {
                    cart.length>0  && cart.map((cItem)=>(
-                        <div className='grid grid-cols-12 my-8' key={cItem.id}>
-                            <div className='col-span-4  rounded-lg' >
+                        <div className='grid grid-cols-12 my-8 ' key={cItem.id}>
+                            <div className='col-span-4  rounded-lg h-[140px]' >
                                 <Image 
                                 src={`${cItem?.product?.banner?.url}`}
                                 width={200}
                                 height={200}
                                 alt='product-img '
-                                className='h-[100%] rounded-lg'
+                                className='h-[100%] rounded-lg object-contain'
                                 />
                             </div>
                             <div className='col-span-8 px-4 gap-2  grid grid-cols-12 '>
                                
                                <div className='col-span-9 flex flex-col justify-between'>
-                                    <h2>{cItem.product.title}</h2>
+                                    <h2 className='text-[14px]'>{cItem.product.title}</h2>
                                    
                                 
                                    <h2 className='text-[14px] text-primary'>{cItem.product.category}</h2>
@@ -67,11 +108,16 @@ function Cart({showCart,setShowCart}) {
                                    <h2 className='line-clamp-2 text-[13px] text-gray-500'>
                                                {cItem.product.description[0].children[0].text}
                                    </h2>
+                             
+                                   <span className='mt-2'>
+                                   
+                                    <Counter quantity={cItem.quantity} handleCartItemQuantity={(newQuantity)=>{handleCartItemQuantity(cItem.id,newQuantity)}}/>
+                                   </span>
                                </div>
                                
 
                                <div className='col-span-3  flex flex-col justify-between items-end'>
-                                    <h3>${cItem.product.price}</h3>
+                                    <h3 className='text-primary'>${cItem.product.price}</h3>
                                     <span>
                                         <CircleX 
                                         className='w-5 h-5  text-red-600 self-end hover:cursor-pointer'
@@ -94,14 +140,47 @@ function Cart({showCart,setShowCart}) {
              
                     <div className='mt-auto  flex justify-between mb-4 '>
                         <h3 className='capitalize text-lg'>subtotal:</h3>
-                        <span>
+                        <span className='text-primary'>
                             $
                             {
                                 cart.length>0 ?
-                                + calcTotalPrice() : 0
+                                + calcTotalPrice().toFixed(2) : 0
                             }
                          </span>
                     </div>
+
+                    <div className='text-center my-2'>
+                        <button className='
+                                bg-red-500
+                                text-white 
+                                rounded-full
+                                px-20
+                                md:px-16
+                                py-2
+                                
+                                '
+                                onClick={handleSaveCart}
+                                >
+                                save cart
+                        </button>
+                        <button className='
+                                bg-teal-500
+                                text-white 
+                                rounded-full
+                                px-20
+                                md:px-16
+                                py-2
+                                my-2
+                                md:my-2
+                                ml-0
+                                md:ml-9
+                                '
+                            
+                                >
+                                view cart
+                        </button>
+                    </div>
+
                     <div className='text-center'>
                    
                        
@@ -115,7 +194,7 @@ function Cart({showCart,setShowCart}) {
                             disabled:opacity-50
                             '
                             disabled={cart.length === 0}
-                            onClick={()=>router.push(`/checkout?amount=${calcTotalPrice()}`)}
+                            onClick={()=>router.push(`/checkout?amount=${calcTotalPrice().toFixed(2)}`)}
                             >
                                 pay with stripe
                             </button>
