@@ -10,7 +10,7 @@ import {productsContext} from './_context/ProductsContext'
 import { useState } from "react";
 import { ToastContainer } from 'react-toastify';
 import { NextUIProvider } from "@nextui-org/react";
-import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
+import { PrimeReactProvider } from 'primereact/api';
 import '../node_modules/react-toastify/dist/ReactToastify.css'
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 const robotoFont = Roboto({

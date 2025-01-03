@@ -1,6 +1,6 @@
-import { AlertOctagon, BadgeCheck, List, ShoppingCart, Star, StarIcon, Stars } from 'lucide-react'
+import { AlertOctagon, BadgeCheck, List, ShoppingCart, StarIcon } from 'lucide-react'
 import React, { useContext, useState } from 'react'
-import SkeletonAnimation from './SkeletonAnimation'
+import SkeletonAnimation from '../../_components/SkeletonAnimation'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import CartApis from '../../_utils/CartApis'
@@ -27,7 +27,7 @@ function ProductDetailsInfo({product}) {
           username:user.fullName,
            email:user.primaryEmailAddress.emailAddress,
            products: [product.documentId],
-           quantity:1
+           quantity:quantity
       }
   
 

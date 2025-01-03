@@ -30,13 +30,13 @@ function ProductsSection() {
 
   // pagination functions
   const [first, setFirst] = useState([0, 0, 0]);
-  const [rows, setRows] = useState([5, 5, 5]);
+  const [rows, setRows] = useState([8, 8, 8]);
   const template2 = {
     layout: 'RowsPerPageDropdown CurrentPageReport PrevPageLink NextPageLink',
     RowsPerPageDropdown: (options) => {
         const dropdownOptions = [
-            { label: 5, value: 5 },
-            { label: 10, value: 10 },
+            { label: 8, value: 8 },
+            { label: 12, value: 12 },
             { label: 15, value: 15 },
             { label: 20, value: 20 }
         ];
@@ -121,10 +121,10 @@ function ProductsSection() {
 
 
   return (
-    <div className="px-4 md:px-20">
+    <div className="px-4 md:px-14 mb-9 mt-8">
 
       <div className="flex justify-between items-center">
-        <h2 className="capitalize my-4 text-xl">Brand new</h2>
+        <h2 className="capitalize my-4 text-xl">Trending Products</h2>
         <h2 className="flex items-center text-teal-300 hover:cursor-pointer">
           view collection
           <MoveRight className="mx-2" />
@@ -162,13 +162,15 @@ function ProductsSection() {
               />
           </div>
         </div>
-        <ProductsList
-        products={products}
-          />
+
+        
+       
       </>
     }
 
-
+        <ProductsList
+        products={products}
+          />
  
 
     </div>

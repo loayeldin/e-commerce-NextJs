@@ -151,11 +151,12 @@ function Cart({showCart,setShowCart}) {
 
                     <div className='text-center my-2'>
                         <button className='
-                                bg-red-500
+                                bg-primary
                                 text-white 
                                 rounded-full
-                                px-20
-                                md:px-16
+                                px-24
+                               
+                                md:px-18
                                 py-2
                                 
                                 '
@@ -175,31 +176,15 @@ function Cart({showCart,setShowCart}) {
                                 ml-0
                                 md:ml-9
                                 '
-                            
+                                disabled={cart.length === 0}
+                                onClick={()=>router.push(`/checkout?amount=${calcTotalPrice().toFixed(2)}`)}
                                 >
-                                view cart
+                                pay with stripe
                         </button>
                     </div>
 
-                    <div className='text-center'>
-                   
-                       
-                        <button className='
-                            bg-teal-500
-                            text-white 
-                            rounded-full
-                            px-16
-                            md:px-40
-                            py-2
-                            disabled:opacity-50
-                            '
-                            disabled={cart.length === 0}
-                            onClick={()=>router.push(`/checkout?amount=${calcTotalPrice().toFixed(2)}`)}
-                            >
-                                pay with stripe
-                            </button>
-                     
-                    </div>
+                
+              
                  
         
              

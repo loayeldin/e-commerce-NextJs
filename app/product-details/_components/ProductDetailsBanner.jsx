@@ -1,7 +1,7 @@
 
 import Image from 'next/image'
 import React from 'react'
-import SkeletonAnimation from './SkeletonAnimation';
+import SkeletonAnimation from '../../_components/SkeletonAnimation';
 import { hostName } from '../../_utils/axiosClient';
 
 function ProductDetailsBanner({product}) {
