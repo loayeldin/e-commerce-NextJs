@@ -188,13 +188,13 @@ function ResponsiveNavBar({showNav,setShowNav, user , isLoaded }){
                 </Link>
               </h2>
               <h2 className='capitalize text-slate-700 hover:text-primary ease-in-out transition-colors'>
-                <Link href='/userorders' onClick={()=>setShowNav(false)}>
+                <Link href='/contact' onClick={()=>setShowNav(false)}>
                 contact us
                 </Link>
               </h2>
          
               <h2 className='capitalize text-slate-700 hover:text-primary ease-in-out transition-colors'>
-                <Link href='/userorders' onClick={()=>setShowNav(false)}>
+                <Link href='' onClick={()=>setShowNav(false)}>
                 FAQ
                 </Link>
               </h2>
