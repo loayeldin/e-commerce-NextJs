@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useCallback } from 'react'
 import ProductsApi from '../../_utils/ProductsApi'
 import BreadCrumb from '../../_components/BreadCrumb'
 import ProductDetailsBanner from '../_components/ProductDetailsBanner'
@@ -13,37 +13,39 @@ import { usePathname } from 'next/navigation'
     const path = usePathname()
 
 
-    async function fetchParams(){
+
+    const fetchParams = useCallback(async()=>{
         const resolvedParams = await params
-        console.log('params.....' , params);
+      
         setProductId(resolvedParams.productId) 
-    }
+    },[params])
     
-    const getProductDetails_ = ()=>{
-        console.log("from details : " , productId);
+    const getProductDetails_ = useCallback(()=>{
+     
         ProductsApi.getProductById(productId).then(res=>{
          
             setProductDetails(res.data)
           
             getSimilarProducts_(res.data.data.category)
         })
-    }
-    const getSimilarProducts_= (category)=>{
-        console.log("cat from similar", category);
+    },[productId])
+    const getSimilarProducts_= useCallback((category)=>{
+     
         ProductsApi.getSimilarProductsByCat(category).then(res=>{
             setSimilarProducts(res?.data)
-            console.log('similar...',res.data);
+         
         })
-    }
+    },[])
    
-    useEffect(()=>{
-        fetchParams()
-        if(productId){
-            getProductDetails_()
-          
+    useEffect(() => {
+        fetchParams(); // Set productId based on params
+      }, [params]);
+    
+      useEffect(() => {
+        if (productId) {
+          getProductDetails_();
         }
-   
-    },[productId])
+      }, [productId, getProductDetails_]);
 
         
    
@@ -74,4 +76,4 @@ import { usePathname } from 'next/navigation'
     </div>
   )
 }
-export default ProductDetails
+export default React.memo(ProductDetails)

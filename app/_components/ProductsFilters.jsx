@@ -12,11 +12,11 @@ function ProductsFilters({handleSelectedCatgory,handleSearchInput,handlePriceRan
 
   useEffect(()=>{
     ProductsApi.getAllCtagories().then((res)=>{
-      console.log(console.log(res, ' categories'));
+   
       const uniqueCategories = [...new Set(res.data.data.map(product => product.category))];
-      console.log(uniqueCategories);
+   
       setCategories(uniqueCategories)
-      console.log(categories , setCategories , '............');
+  
      
     })
   },[])
@@ -183,4 +183,4 @@ const SearchIcon = (props) => {
     </svg>
   );
 };
-export default ProductsFilters
+export default React.memo(ProductsFilters)

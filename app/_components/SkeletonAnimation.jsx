@@ -2,7 +2,7 @@ import React from 'react'
 
 
 function SkeletonAnimation({ width, height }) {
-    console.log('width', width, 'height', height);
+
   
     return (
       <>
@@ -26,4 +26,4 @@ function SkeletonAnimation({ width, height }) {
     );
   }
 
-export default SkeletonAnimation
+export default React.memo(SkeletonAnimation)

@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import React, { useContext } from 'react'
+import React, { useContext,useCallback } from 'react'
 import { List } from 'lucide-react';
 import Link from 'next/link';
 import { useUser } from '@clerk/nextjs';
@@ -11,7 +11,7 @@ function ProductItem({item}) {
   const {user} = useUser()
   const router = useRouter();
   const {cart,setCart} = useContext(cartContext)
-  const handleAddToCart = (e)=>{
+  const handleAddToCart = useCallback((e)=>{
   
     e.stopPropagation()
     if(!user){
@@ -29,9 +29,9 @@ function ProductItem({item}) {
      let ItemIndexInCart =  cart.findIndex(cartItem=>{
         return cartItem.product.documentId === item.documentId
       })
-      console.log(ItemIndexInCart,'foundItem');
+
       if(ItemIndexInCart !==-1){ // check if the item exist in cart
-        console.log('updated');
+       
         //update item 
         const updatedCart = [...cart]
         updatedCart[ItemIndexInCart] = {
@@ -41,12 +41,12 @@ function ProductItem({item}) {
    
 
         data.quantity = updatedCart[ItemIndexInCart].quantity
-        console.log(data,'dataaaaaaaaaaaaaaaa' );
+    
         CartApis.updateCart(
           data,
           updatedCart[ItemIndexInCart].documentId
           ).then(res=>{
-            console.log('updateddd',res);
+       
             setCart(updatedCart)
             toast.success('Item updated Successfully')
             
@@ -73,10 +73,10 @@ function ProductItem({item}) {
         })
       }
 
-      console.log('finished');
+      
     
     }
-  }
+  },[user, item, cart])
 
   return (
   <article className="rounded-xl bg-white p-3 shadow-lg hover:shadow-xl hover:transform hover:scale-105 duration-300 ">
@@ -119,4 +119,4 @@ function ProductItem({item}) {
   )
 }
 
-export default ProductItem
+export default React.memo(ProductItem)

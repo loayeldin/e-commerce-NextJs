@@ -2,10 +2,9 @@
 import Image from 'next/image'
 import React from 'react'
 import SkeletonAnimation from '../../_components/SkeletonAnimation';
-import { hostName } from '../../_utils/axiosClient';
+
 
 function ProductDetailsBanner({product}) {
-    console.log(hostName,product?.banner?.url);
   return (
     <div className='w-[100%]  flex justify-center' >
         {
@@ -28,4 +27,4 @@ function ProductDetailsBanner({product}) {
   )
 }
 
-export default ProductDetailsBanner
+export default React.memo(ProductDetailsBanner)

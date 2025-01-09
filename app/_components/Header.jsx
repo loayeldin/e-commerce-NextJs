@@ -1,10 +1,9 @@
 'use client'
 import { UserButton, useUser } from '@clerk/nextjs'
-import { Circle, CircleX, ShoppingCart } from 'lucide-react'
+import { CircleX, ShoppingCart } from 'lucide-react'
 import Image from 'next/image'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState,useCallback} from 'react'
 import SkeletonAnimation from './SkeletonAnimation'
-import { ChevronLeft } from 'lucide-react';
 import { usePathname } from 'next/navigation'
 import { cartContext } from '../_context/CartContext'
 import CartApis from '../_utils/CartApis'
@@ -18,9 +17,8 @@ import Link from 'next/link'
   const [showCart, setShowCart] = useState(false)
   const path = usePathname(); 
   const[hideHeader,setHideHeader] = useState(null)
-  const getCartItems = ()=>{
+  const getCartItems = useCallback( ()=>{
     CartApis.getUserCart(user?.primaryEmailAddress?.emailAddress).then((res)=>{
-      console.log('fetched cart items........',res.data);
 
       const newCart = res.data.data.map((cartItem) => ({
         id: cartItem.id,
@@ -30,19 +28,24 @@ import Link from 'next/link'
       }));
       setCart(newCart);
     })
-  }
+  },[user, setCart])
   useEffect(()=>{
-      if(path.toString().includes('sign-in') ||path.toString().includes('sign-up') ){
-        setHideHeader(true)
-      }else{
-        setHideHeader(false)
+    if (hideHeader === null) {
+      if (path.toString().includes('sign-in') || path.toString().includes('sign-up')) {
+       
+        setHideHeader(true);
+      } else {
+      
+         setHideHeader(false);
       }
-     
+    
+   }
+ 
      user&& getCartItems()
     
 
 
-  },[path,user])
+  },[user,getCartItems])
   if(hideHeader===null){
     return null;
   }
@@ -73,7 +76,7 @@ import Link from 'next/link'
 
               
               <li>
-                <Link className="text-gray-500 transition hover:text-teal-500/75" href="contact"> Contact Us </Link>
+                <Link href="/contact" className="text-gray-500 transition hover:text-teal-500/75" > Contact Us </Link>
               </li>
   
              
@@ -153,10 +156,10 @@ import Link from 'next/link'
   )
 }
 
-export default Header
+export default React.memo(Header)
 
+const ResponsiveNavBar = React.memo(({showNav,setShowNav, user , isLoaded })=>{
 
-function ResponsiveNavBar({showNav,setShowNav, user , isLoaded }){
   return(
     <div className={`nav-wrapper ${showNav? 'active':''} hover:cursor-pointer`}
   
@@ -240,4 +243,4 @@ function ResponsiveNavBar({showNav,setShowNav, user , isLoaded }){
    
     </div>
   )
-}
+})

@@ -57,4 +57,4 @@ function BreadCrumb({path,id}) {
   );
 }
 
-export default BreadCrumb;
+export default React.memo(BreadCrumb);

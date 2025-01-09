@@ -25,4 +25,4 @@ function PaymentConfirm() {
 	)
 }
 
-export default PaymentConfirm
+export default React.memo(PaymentConfirm)

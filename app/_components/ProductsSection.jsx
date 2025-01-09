@@ -1,5 +1,5 @@
 'use client'
-import React ,{useState, useContext, useEffect}from "react";
+import React ,{useState, useContext, useEffect,useCallback,useMemo}from "react";
 import ProductsList from "./ProductsList";
 
 import { productsContext } from "../_context/ProductsContext";
@@ -16,22 +16,22 @@ function ProductsSection() {
   const {products, setProducts} = useContext(productsContext)
 
 
-  const handlePriceRange = (newRange)=>{
+  const handlePriceRange = useCallback((newRange)=>{
     setPriceRange(newRange)
-  }
-  const handleSearchInput = (searchText)=>{
+  },[])
+  const handleSearchInput = useCallback((searchText)=>{
     setSearchInput(searchText)
-  }
-  const handleSelectedCatgory = (newCat)=>{
+  },[])
+  const handleSelectedCatgory = useCallback((newCat)=>{
     setSelectedCategory(newCat)
-    console.log(newCat);
-  }
+  
+  },[])
 
 
   // pagination functions
   const [first, setFirst] = useState([0, 0, 0]);
   const [rows, setRows] = useState([8, 8, 8]);
-  const template2 = {
+  const template2 =useMemo(()=>( {
     layout: 'RowsPerPageDropdown CurrentPageReport PrevPageLink NextPageLink',
     RowsPerPageDropdown: (options) => {
         const dropdownOptions = [
@@ -57,39 +57,35 @@ function ProductsSection() {
             </span>
         );
     }
-  };
+  }));
 
   const onPaginationChange = (e, index) => {
-  console.log(e,index);
+
   setFirst(first.map((f, i) => (index === i ? e.first : f)));
   setRows(rows.map((r, i) => (index === i ? e.rows : r)));
   };
 
-  const getProductsList_ = (
+  const getProductsList_ = useCallback((
+   
+    pagination
+   ) => {
+ 
+    ProductsApi.getProductsList(
       selectedCategory,
       searchInput,
       priceRange,
-      pagination
-     ) => {
-    console.log(pagination);
-      ProductsApi.getProductsList(
-        selectedCategory,
-        searchInput,
-        priceRange,
-        pagination,
-        )
-        .then((res) => {
-          console.log(res.data);
-        setProducts(res.data);
+      pagination,
+      )
+      .then((res) => {
+     
+      setProducts(res.data);
+  
     
-      
-      });
-  };
+    });
+},[selectedCategory, searchInput, priceRange,first,rows])
   useEffect(() => {
     getProductsList_(
-      selectedCategory,
-      searchInput,
-      priceRange,
+
       {pageStart:first[1],pageLimit:rows[1]}
       );
 
@@ -177,4 +173,4 @@ function ProductsSection() {
   );
 }
 
-export default ProductsSection;
+export default React.memo(ProductsSection);

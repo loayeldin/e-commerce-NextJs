@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useMemo } from "react";
 import ProductItem from './ProductItem';
 
 import {Card, Skeleton} from "@nextui-org/react";
@@ -30,11 +30,10 @@ const skeletonArray  = Array.from({length:8})
   )
 }
 
-export default ProductsList
+export default React.memo(ProductsList)
 
 
-
- function SkeltonCard() {
+const SkeltonCard= React.memo(()=>{
   return (
     <Card className="space-y-5 p-4 min-h-32" radius="lg">
       <Skeleton className="rounded-lg">
@@ -53,4 +52,24 @@ export default ProductsList
       </div>
     </Card>
   );
-}
+})
+//  function SkeltonCard() {
+//   return (
+//     <Card className="space-y-5 p-4 min-h-32" radius="lg">
+//       <Skeleton className="rounded-lg">
+//         <div className="h-24 rounded-lg bg-default-300" />
+//       </Skeleton>
+//       <div className="space-y-3">
+//         <Skeleton className="w-3/5 rounded-lg">
+//           <div className="h-3 w-3/5 rounded-lg bg-default-200" />
+//         </Skeleton>
+//         <Skeleton className="w-4/5 rounded-lg">
+//           <div className="h-3 w-4/5 rounded-lg bg-default-200" />
+//         </Skeleton>
+//         <Skeleton className="w-2/5 rounded-lg">
+//           <div className="h-3 w-2/5 rounded-lg bg-default-300" />
+//         </Skeleton>
+//       </div>
+//     </Card>
+//   );
+// }

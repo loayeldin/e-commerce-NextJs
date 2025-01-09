@@ -1,5 +1,5 @@
 import { AlertOctagon, BadgeCheck, List, ShoppingCart, StarIcon } from 'lucide-react'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState,useCallback } from 'react'
 import SkeletonAnimation from '../../_components/SkeletonAnimation'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
@@ -10,19 +10,21 @@ import Counter from'../../_components/Counter'
 function ProductDetailsInfo({product}) {
   const [quantity ,setQuantity] = useState(1)
   const handleQuantityDetials = (newQuantity) => {
+   
     setQuantity(newQuantity)
-  
+
 
  
 };
   const {user} = useUser()
   const router = useRouter();
   const {cart,setCart} = useContext(cartContext)
-  const handleAddToCart = ()=>{
+  const handleAddToCart = useCallback(()=>{
+  
     if(!user){
       router.push('/sign-in')
     }else{
-      console.log(quantity, ' from add cart');
+    
       const data = {
           username:user.fullName,
            email:user.primaryEmailAddress.emailAddress,
@@ -34,24 +36,20 @@ function ProductDetailsInfo({product}) {
      let ItemIndexInCart =  cart.findIndex(cartItem=>{
         return cartItem.product.documentId === product.documentId
       })
-      console.log(ItemIndexInCart,'foundItem');
+     
       if(ItemIndexInCart !==-1){
-        console.log('updated');
         //update item 
         const updatedCart = [...cart]
         updatedCart[ItemIndexInCart] = {
           ...updatedCart[ItemIndexInCart],
           quantity:Number(updatedCart[ItemIndexInCart].quantity)+quantity
         }
-   
-
         data.quantity = updatedCart[ItemIndexInCart].quantity
-        console.log(data,'dataaaaaaaaaaaaaaaa' );
         CartApis.updateCart(
           data,
           updatedCart[ItemIndexInCart].documentId
           ).then(res=>{
-            console.log('updateddd',res);
+       
             setCart(updatedCart)
             setQuantity(1)
             toast.success('Item updated Successfully')
@@ -76,14 +74,14 @@ function ProductDetailsInfo({product}) {
           setQuantity(1)
        
         }).catch(err=>{
-          console.log('error', err.response.data);
+       
         })
       }
 
-      console.log('finished');
+   
     
     }
-  }
+  },[user, product,quantity, cart])
   return (
     <>
     {
@@ -152,4 +150,4 @@ function ProductDetailsInfo({product}) {
   )
 }
 
-export default ProductDetailsInfo
+export default React.memo(ProductDetailsInfo)

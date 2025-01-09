@@ -13,7 +13,7 @@ function UserOrders() {
   useEffect(()=>{
     if(user){
       OrderApi.getOrder(user?.primaryEmailAddress?.emailAddress).then(res=>{
-        console.log(res.data);
+     
         setOrders(res.data)
       })
     }
@@ -47,7 +47,6 @@ function UserOrders() {
             });
             const shippingSteps = ['pending', 'processing', 'shipped', 'out for delivery', 'delivered'];
             const currentStepIndex = shippingSteps.indexOf(orderItem.shippingstatus?.toLowerCase());
-              console.log(orderItem.shippingstatus);
           return(
             <div key={orderItem.id} className='rounded-lg p-4 mb-5' style={{boxShadow:'0 2px 10px #0000001a'}}> 
             <h1 className='text-2xl capitalize mb-3'>order
@@ -59,7 +58,7 @@ function UserOrders() {
               const quantity = orderItem.productQuantities[product.documentId] ;
               return(
               <OrderProduct
-              key={product.id}
+                key={product.id}
                 product={product}
                 quantity={quantity}
                  />

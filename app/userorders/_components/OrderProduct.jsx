@@ -2,7 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import { AlertOctagon, BadgeCheck, List } from 'lucide-react';
 function OrderProduct({product,quantity}) {
-    console.log(quantity);
+ 
   return (
     <div className='grid grid-cols-12 mb-4 gap-x-5 ' >
         <div className='col-span-12 md:col-span-2  rounded-md overflow-hidden'>

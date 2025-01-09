@@ -1,3 +1,4 @@
+import { read } from "fs";
 import React from "react";
 const Contact = () => {
  
@@ -960,9 +961,9 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default React.memo(Contact);
 
-const ContactTextArea = ({ row, placeholder, name, defaultValue }) => {
+const ContactTextArea = React.memo(({ row, placeholder, name, defaultValue }) => {
   return (
     <>
       <div className="mb-6">
@@ -976,9 +977,9 @@ const ContactTextArea = ({ row, placeholder, name, defaultValue }) => {
       </div>
     </>
   );
-};
+})
 
-const ContactInputBox = ({ type, placeholder, name }) => {
+const ContactInputBox = React.memo(({ type, placeholder, name }) => {
   return (
     <>
       <div className="mb-6">
@@ -991,4 +992,4 @@ const ContactInputBox = ({ type, placeholder, name }) => {
       </div>
     </>
   );
-};
+})

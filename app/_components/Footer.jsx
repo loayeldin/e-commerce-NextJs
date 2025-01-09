@@ -2,6 +2,7 @@ import Image from 'next/image'
 import React from 'react'
 
 function Footer() {
+
 	return (
 		<footer className="bg-gray-100">
 			<div className="max-w-5xl px-4 py-16 mx-auto sm:px-6 lg:px-8">
@@ -134,4 +135,4 @@ function Footer() {
 	)
 }
 
-export default Footer
+export default React.memo(Footer)
