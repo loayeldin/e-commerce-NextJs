@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,memo } from 'react'
 import OrderApi from '../_utils/OrderApi'
 import { useUser } from '@clerk/nextjs'
 import OrderProduct from './_components/OrderProduct'
@@ -105,4 +105,4 @@ function UserOrders() {
   )
 }
 
-export default UserOrders
+export default React.memo(UserOrders)

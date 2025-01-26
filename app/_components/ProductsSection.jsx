@@ -22,10 +22,10 @@ function ProductsSection() {
   const handleSearchInput = useCallback((searchText)=>{
     setSearchInput(searchText)
   },[])
-  const handleSelectedCatgory = useCallback((newCat)=>{
+  const handleSelectedCatgory = (newCat)=>{
     setSelectedCategory(newCat)
   
-  },[])
+  }
 
 
   // pagination functions

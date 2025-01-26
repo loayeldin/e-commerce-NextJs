@@ -62,67 +62,56 @@ function ProductsFilters({handleSelectedCatgory,handleSearchInput,handlePriceRan
 
       
     
-      <Autocomplete
-      className="md:w-[220px] custom-autocomplete shadow-xl "
-      // defaultSelectedKey="women's clothing"
-      label="filter by category"
-      placeholder="Category"
-      scrollShadowProps={{
-        isEnabled: false,
-      }}
+     {
+      categories && categories.length >0  &&(
+        <Autocomplete
+        className="md:w-[220px] custom-autocomplete shadow-xl relative z-10 hover:cursor-pointer"
+        // defaultSelectedKey="women's clothing"
+        label="filter by category"
+        placeholder="Category"
+        scrollShadowProps={{
+          isEnabled: false,
+        }}
+       
+        classNames={{
+         
+          selectorButton: "text-teal-500 ",
+          clearButton:"text-teal-500 "
+        }}
+        listboxProps={{
+         
+          itemClasses: {
+            base: [
+              
+              "text-default-500",
+              "data-[hover=true]:bg-default-200",
+              "data-[focus-visible=true]:bg-default-200",
+              "data-[pressed=true]:opacity-70",
+              "data-[selected=true]:bg-teal-500  ",
+              "data-[selected=true]:text-white",      
+              "data-[selectable=true]:focus:none",
+            ],
+          },
+        }}
+        onSelectionChange = {(key)=>{handleSelectedCatgory(key)}}
+      >
+        {
+          categories.map((cat)=>(
+            <AutocompleteItem key={cat} >
+              {cat}
+            </AutocompleteItem>
+          ))
+        }
+       </Autocomplete>
      
-      classNames={{
-       
-        selectorButton: "text-teal-500 ",
-        clearButton:"text-teal-500 "
-      }}
-      listboxProps={{
-       
-        itemClasses: {
-          base: [
-            
-            "text-default-500",
-            "data-[hover=true]:bg-default-200",
-            "data-[focus-visible=true]:bg-default-200",
-            "data-[pressed=true]:opacity-70",
-            "data-[selected=true]:bg-teal-500  ",
-            "data-[selected=true]:text-white",      
-            "data-[selectable=true]:focus:none",
-          ],
-        },
-      }}
-      // popoverProps={{
-      
-      //   classNames: {
-      //     base: ["rounded-large shadow-xl ",
-        
-      //   ],
-      //     content: "p-2 border-small border-teal-500 ",
-      //   },
-      // }}
-      // popoverContentProps={{
-      //   classNames: {
-      //     base: ["rounded-large ",
-        
-      //   ],
-      //     content: "p-5 border-small border-green",
-      //   },
-      // }}
-      onSelectionChange = {(key)=>{handleSelectedCatgory(key)}}
-    >
-      {
-        categories&& categories.map((cat)=>(
-          <AutocompleteItem key={cat} >
-            {cat}
-          </AutocompleteItem>
-        ))
-      }
-     </Autocomplete>
-   
-   
+      )
+     }
+
+
+
 
      <Slider
-      className="md:w-[280px]"
+      className="md:w-[280px]  relative z-10"
       classNames={{
         base: "max-w-md",
         filler: "bg-gradient-to-r from-primary to-secondary-400",
