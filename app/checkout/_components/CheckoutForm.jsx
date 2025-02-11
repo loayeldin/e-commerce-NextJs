@@ -123,7 +123,7 @@ const CheckoutForm = ({amount}) => {
         clientSecret,
         elements,
         confirmParams: {
-          return_url: 'http://localhost:3000/checkout/payment-confirm',
+          return_url: 'https://e-commerce-next-js-liart.vercel.app/checkout/payment-confirm',
         },
       });
     });
